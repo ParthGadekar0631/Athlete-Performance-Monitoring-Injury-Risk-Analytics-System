@@ -10,6 +10,8 @@ python -m uvicorn src.api.main:app --reload
 
 Open `http://127.0.0.1:8000/dashboard`.
 
+The same dashboard is also packaged for GitHub Pages in `docs/` and deploys through `.github/workflows/pages.yml`.
+
 Recommended dashboard pages:
 
 - Team Overview: workload, readiness, high-risk counts, workload spikes by position, recovery distribution.

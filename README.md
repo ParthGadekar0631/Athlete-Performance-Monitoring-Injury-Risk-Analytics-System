@@ -125,6 +125,14 @@ python -m uvicorn src.api.main:app --reload
 
 Open `http://127.0.0.1:8000/dashboard`.
 
+Hosted GitHub Pages dashboard:
+
+```text
+https://parthgadekar0631.github.io/Athlete-Performance-Monitoring-Injury-Risk-Analytics-System/
+```
+
+The hosted version is static and reads `docs/dashboard_export.csv` directly in the browser.
+
 ## Run Locally
 
 ```bash
