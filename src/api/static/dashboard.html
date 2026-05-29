@@ -8,12 +8,31 @@
   </head>
   <body>
     <main class="shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Baseball Performance Analytics</p>
-          <h1>Read-Only Athlete Monitoring Dashboard</h1>
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow-row">
+            <p class="eyebrow">Baseball Performance Analytics</p>
+            <span class="read-only-badge">View only</span>
+          </div>
+          <h1>Athlete Monitoring Command Center</h1>
+          <p class="hero-subtitle">
+            Workload, readiness, recovery, and injury-risk indicators for baseball performance staff.
+          </p>
         </div>
-        <div class="status-pill" id="recordStatus">Loading data</div>
+        <div class="hero-stats" aria-label="Dashboard status">
+          <div class="hero-stat">
+            <span>Dataset</span>
+            <strong id="recordStatus">Loading</strong>
+          </div>
+          <div class="hero-stat">
+            <span>Window</span>
+            <strong id="dateWindow">--</strong>
+          </div>
+          <div class="hero-stat accent">
+            <span>Mode</span>
+            <strong>Read only</strong>
+          </div>
+        </div>
       </header>
 
       <section class="filters" aria-label="Dashboard filters">
@@ -53,68 +72,96 @@
         <article class="metric">
           <span>Average Workload</span>
           <strong id="avgWorkload">--</strong>
+          <small>Daily composite load</small>
         </article>
         <article class="metric">
           <span>Average Readiness</span>
           <strong id="avgReadiness">--</strong>
+          <small>Player readiness score</small>
         </article>
         <article class="metric">
           <span>Average ACWR</span>
           <strong id="avgAcwr">--</strong>
+          <small>Acute to chronic load</small>
         </article>
         <article class="metric risk">
           <span>Elevated / High Days</span>
           <strong id="riskDays">--</strong>
+          <small>Risk category count</small>
         </article>
         <article class="metric warn">
           <span>Workload Spikes</span>
           <strong id="spikeDays">--</strong>
+          <small>Spike flag count</small>
         </article>
         <article class="metric">
           <span>Low Recovery Days</span>
           <strong id="lowRecoveryDays">--</strong>
+          <small>Recovery below 60</small>
         </article>
       </section>
 
       <section class="grid">
-        <article class="panel wide">
+        <article class="panel span-2">
           <div class="panel-head">
-            <h2>Team Workload and Readiness</h2>
+            <div>
+              <p class="panel-kicker">Team overview</p>
+              <h2>Workload, Readiness, and Risk Trend</h2>
+            </div>
+            <span class="panel-note" id="teamTrendNote">All selected records</span>
           </div>
           <div id="teamTrendChart" class="chart"></div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h2>Risk Distribution</h2>
+            <div>
+              <p class="panel-kicker">Risk mix</p>
+              <h2>Risk Distribution</h2>
+            </div>
           </div>
           <div id="riskChart" class="chart compact"></div>
         </article>
 
         <article class="panel wide">
           <div class="panel-head">
-            <h2>Player Monitoring</h2>
+            <div>
+              <p class="panel-kicker">Player focus</p>
+              <h2>Player Monitoring</h2>
+            </div>
+            <span class="panel-note" id="playerTrendNote">Highest recent risk</span>
           </div>
           <div id="playerTrendChart" class="chart"></div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h2>Workload Spikes by Position</h2>
+            <div>
+              <p class="panel-kicker">Exposure alerts</p>
+              <h2>Workload Spikes by Position</h2>
+            </div>
           </div>
           <div id="spikeChart" class="chart compact"></div>
         </article>
 
         <article class="panel wide">
           <div class="panel-head">
-            <h2>Pitcher Workload</h2>
+            <div>
+              <p class="panel-kicker">Pitcher workload</p>
+              <h2>Throwing, Pitch Count, Velocity, and Recovery</h2>
+            </div>
+            <span class="panel-note" id="pitcherTrendNote">Top throwing volume</span>
           </div>
           <div id="pitcherChart" class="chart"></div>
         </article>
 
-        <article class="panel wide">
+        <article class="panel span-2">
           <div class="panel-head">
-            <h2>Risk Alerts</h2>
+            <div>
+              <p class="panel-kicker">Staff review queue</p>
+              <h2>Risk Alerts</h2>
+            </div>
+            <span class="panel-note">Sorted by risk score</span>
           </div>
           <div class="table-wrap">
             <table>

@@ -5,15 +5,16 @@ const state = {
 };
 
 const colors = {
-  workload: "#2764c7",
-  readiness: "#1f8a5b",
-  acwr: "#b7791f",
-  risk: "#c03535",
-  throwing: "#16828a",
-  pitch: "#7048a8",
+  workload: "#2f6fc9",
+  readiness: "#22845a",
+  acwr: "#b97716",
+  risk: "#c33c3c",
+  throwing: "#0f7f8b",
+  pitch: "#6b55aa",
   velocity: "#c75b2a",
-  grid: "#d9e0e6",
-  text: "#5e6a75",
+  grid: "#dce4ea",
+  gridStrong: "#c8d3dc",
+  text: "#63717d",
 };
 
 const $ = (id) => document.getElementById(id);
@@ -132,6 +133,7 @@ function renderKpis(rows) {
   $("spikeDays").textContent = rows.filter((row) => boolValue(row.workload_spike_flag)).length.toLocaleString();
   $("lowRecoveryDays").textContent = rows.filter((row) => boolValue(row.low_recovery_flag)).length.toLocaleString();
   $("recordStatus").textContent = `${rows.length.toLocaleString()} records`;
+  $("dateWindow").textContent = rows.length ? `${rows[0].date} to ${rows[rows.length - 1].date}` : "--";
 }
 
 function chartScales(series, width, height, padding) {
@@ -160,24 +162,46 @@ function renderLineChart(id, rows, seriesConfig) {
     el.innerHTML = `<div class="empty-state">No matching records</div>`;
     return;
   }
-  const width = 880;
-  const height = 300;
-  const padding = { top: 24, right: 24, bottom: 42, left: 48 };
+  const width = 960;
+  const height = 330;
+  const padding = { top: 34, right: 78, bottom: 46, left: 54 };
   const series = seriesConfig.map((config) => ({
     ...config,
     values: rows.map((row) => ({ date: row.date, value: Number(row[config.field]) })).filter((point) => Number.isFinite(point.value)),
   }));
   const scales = chartScales(series, width, height, padding);
-  const ticks = [scales.min, scales.min + (scales.max - scales.min) / 2, scales.max];
+  const ticks = [
+    scales.min,
+    scales.min + (scales.max - scales.min) * 0.25,
+    scales.min + (scales.max - scales.min) * 0.5,
+    scales.min + (scales.max - scales.min) * 0.75,
+    scales.max,
+  ];
   const firstDate = rows[0]?.date || "";
   const lastDate = rows[rows.length - 1]?.date || "";
+  const gradientId = `${id}-wash`;
 
   el.innerHTML = `
     <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${id}">
-      ${ticks.map((tick) => `<line x1="${padding.left}" x2="${width - padding.right}" y1="${scales.y(tick)}" y2="${scales.y(tick)}" stroke="${colors.grid}" /><text class="axis-label" x="8" y="${scales.y(tick) + 4}">${number(tick, 1)}</text>`).join("")}
+      <defs>
+        <linearGradient id="${gradientId}" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#f7fafc" stop-opacity="1" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="1" />
+        </linearGradient>
+      </defs>
+      <rect x="${padding.left}" y="${padding.top}" width="${width - padding.left - padding.right}" height="${height - padding.top - padding.bottom}" rx="6" fill="url(#${gradientId})" stroke="${colors.grid}" />
+      ${ticks.map((tick) => `<line x1="${padding.left}" x2="${width - padding.right}" y1="${scales.y(tick)}" y2="${scales.y(tick)}" stroke="${colors.grid}" /><text class="axis-label" x="10" y="${scales.y(tick) + 4}">${number(tick, 1)}</text>`).join("")}
       <text class="axis-label" x="${padding.left}" y="${height - 10}">${firstDate}</text>
       <text class="axis-label" x="${width - padding.right - 72}" y="${height - 10}">${lastDate}</text>
-      ${series.map((line) => `<path d="${linePath(line.values, scales)}" fill="none" stroke="${line.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`).join("")}
+      ${series.map((line) => `<path d="${linePath(line.values, scales)}" fill="none" stroke="${line.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`).join("")}
+      ${series.map((line) => {
+        const last = line.values[line.values.length - 1];
+        if (!last) return "";
+        const x = scales.x(line.values.length - 1);
+        const y = scales.y(last.value);
+        return `<circle cx="${x}" cy="${y}" r="4.5" fill="#ffffff" stroke="${line.color}" stroke-width="3" />
+          <text class="axis-label" x="${Math.min(width - padding.right + 10, x + 10)}" y="${y + 4}">${number(last.value, 1)}</text>`;
+      }).join("")}
       ${series.map((line, index) => `<circle cx="${padding.left + index * 145}" cy="12" r="5" fill="${line.color}" /><text class="legend" x="${padding.left + 10 + index * 145}" y="16">${line.label}</text>`).join("")}
     </svg>
   `;
@@ -190,20 +214,21 @@ function renderBarChart(id, data, colorByKey = null) {
     el.innerHTML = `<div class="empty-state">No matching records</div>`;
     return;
   }
-  const width = 520;
-  const height = 260;
-  const padding = { top: 24, right: 20, bottom: 62, left: 44 };
+  const width = 560;
+  const height = 280;
+  const padding = { top: 28, right: 24, bottom: 70, left: 48 };
   const max = Math.max(...entries.map(([, value]) => value), 1);
   const band = (width - padding.left - padding.right) / entries.length;
   el.innerHTML = `
     <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${id}">
-      <line x1="${padding.left}" x2="${width - padding.right}" y1="${height - padding.bottom}" y2="${height - padding.bottom}" stroke="${colors.grid}" />
+      <rect x="${padding.left}" y="${padding.top}" width="${width - padding.left - padding.right}" height="${height - padding.top - padding.bottom}" rx="6" fill="#fbfcfd" stroke="${colors.grid}" />
+      <line x1="${padding.left}" x2="${width - padding.right}" y1="${height - padding.bottom}" y2="${height - padding.bottom}" stroke="${colors.gridStrong}" />
       ${entries.map(([key, value], index) => {
         const barHeight = (value / max) * (height - padding.top - padding.bottom);
         const x = padding.left + index * band + 6;
         const y = height - padding.bottom - barHeight;
         const fill = colorByKey?.[key] || colors.blue;
-        return `<rect x="${x}" y="${y}" width="${Math.max(14, band - 12)}" height="${barHeight}" rx="3" fill="${fill}" />
+        return `<rect x="${x}" y="${y}" width="${Math.max(14, band - 12)}" height="${barHeight}" rx="5" fill="${fill}" opacity="0.92" />
           <text class="axis-label" x="${x}" y="${height - padding.bottom + 18}" transform="rotate(35 ${x} ${height - padding.bottom + 18})">${key}</text>
           <text class="axis-label" x="${x}" y="${Math.max(14, y - 6)}">${value}</text>`;
       }).join("")}
@@ -247,11 +272,12 @@ function renderAlerts(rows) {
 }
 
 function render() {
-  const rows = filteredRecords();
+  const rows = filteredRecords().sort((a, b) => a.date.localeCompare(b.date));
   state.filtered = rows;
   renderKpis(rows);
 
   const byDate = aggregateByDate(rows);
+  $("teamTrendNote").textContent = `${rows.length.toLocaleString()} filtered player-days`;
   renderLineChart("teamTrendChart", byDate, [
     { field: "workload_score", label: "Workload", color: colors.workload },
     { field: "readiness_score", label: "Readiness", color: colors.readiness },
@@ -259,6 +285,7 @@ function render() {
   ]);
 
   const playerRows = latestSelectedPlayerRows(rows).sort((a, b) => a.date.localeCompare(b.date));
+  $("playerTrendNote").textContent = playerRows.length ? `${playerRows[0].player_name} | ${playerRows[0].position}` : "No player selected";
   renderLineChart("playerTrendChart", playerRows, [
     { field: "workload_score", label: "Workload", color: colors.workload },
     { field: "readiness_score", label: "Readiness", color: colors.readiness },
@@ -267,6 +294,7 @@ function render() {
   ]);
 
   const pitcher = pitcherRows(rows).sort((a, b) => a.date.localeCompare(b.date));
+  $("pitcherTrendNote").textContent = pitcher.length ? `${pitcher[0].player_name} | ${pitcher[0].team}` : "No pitcher in selection";
   renderLineChart("pitcherChart", pitcher, [
     { field: "pitch_count", label: "Pitch Count", color: colors.pitch },
     { field: "throwing_volume", label: "Throwing", color: colors.throwing },

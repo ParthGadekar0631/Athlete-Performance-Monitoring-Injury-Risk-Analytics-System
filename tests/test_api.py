@@ -35,7 +35,7 @@ def test_injury_risk_endpoint(prepared_pipeline):
 def test_dashboard_page_and_data(prepared_pipeline):
     page = client.get("/dashboard")
     assert page.status_code == 200
-    assert "Read-Only Athlete Monitoring Dashboard" in page.text
+    assert "Athlete Monitoring Command Center" in page.text
     data = client.get("/dashboard/data")
     assert data.status_code == 200
     payload = data.json()
