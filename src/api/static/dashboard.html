@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baseball Performance Dashboard</title>
+    <link rel="stylesheet" href="/static/dashboard.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Baseball Performance Analytics</p>
+          <h1>Read-Only Athlete Monitoring Dashboard</h1>
+        </div>
+        <div class="status-pill" id="recordStatus">Loading data</div>
+      </header>
+
+      <section class="filters" aria-label="Dashboard filters">
+        <label>
+          <span>Player</span>
+          <select id="playerFilter"></select>
+        </label>
+        <label>
+          <span>Team</span>
+          <select id="teamFilter"></select>
+        </label>
+        <label>
+          <span>Position</span>
+          <select id="positionFilter"></select>
+        </label>
+        <label>
+          <span>Risk</span>
+          <select id="riskFilter">
+            <option value="All">All</option>
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Elevated">Elevated</option>
+            <option value="High">High</option>
+          </select>
+        </label>
+        <label>
+          <span>From</span>
+          <input type="date" id="startDate" />
+        </label>
+        <label>
+          <span>To</span>
+          <input type="date" id="endDate" />
+        </label>
+      </section>
+
+      <section class="kpis" aria-label="Key metrics">
+        <article class="metric">
+          <span>Average Workload</span>
+          <strong id="avgWorkload">--</strong>
+        </article>
+        <article class="metric">
+          <span>Average Readiness</span>
+          <strong id="avgReadiness">--</strong>
+        </article>
+        <article class="metric">
+          <span>Average ACWR</span>
+          <strong id="avgAcwr">--</strong>
+        </article>
+        <article class="metric risk">
+          <span>Elevated / High Days</span>
+          <strong id="riskDays">--</strong>
+        </article>
+        <article class="metric warn">
+          <span>Workload Spikes</span>
+          <strong id="spikeDays">--</strong>
+        </article>
+        <article class="metric">
+          <span>Low Recovery Days</span>
+          <strong id="lowRecoveryDays">--</strong>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="panel wide">
+          <div class="panel-head">
+            <h2>Team Workload and Readiness</h2>
+          </div>
+          <div id="teamTrendChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Risk Distribution</h2>
+          </div>
+          <div id="riskChart" class="chart compact"></div>
+        </article>
+
+        <article class="panel wide">
+          <div class="panel-head">
+            <h2>Player Monitoring</h2>
+          </div>
+          <div id="playerTrendChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Workload Spikes by Position</h2>
+          </div>
+          <div id="spikeChart" class="chart compact"></div>
+        </article>
+
+        <article class="panel wide">
+          <div class="panel-head">
+            <h2>Pitcher Workload</h2>
+          </div>
+          <div id="pitcherChart" class="chart"></div>
+        </article>
+
+        <article class="panel wide">
+          <div class="panel-head">
+            <h2>Risk Alerts</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Player</th>
+                  <th>Position</th>
+                  <th>Risk</th>
+                  <th>Score</th>
+                  <th>Fatigue</th>
+                  <th>Reasons</th>
+                </tr>
+              </thead>
+              <tbody id="alertRows"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script src="/static/dashboard.js"></script>
+  </body>
+</html>

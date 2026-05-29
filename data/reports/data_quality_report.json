@@ -1,0 +1,135 @@
+{
+  "total_records_processed": 3212,
+  "duplicate_records": 24,
+  "missing_values_by_column": {
+    "session_type": 8,
+    "workload_score": 8,
+    "recovery_score": 8,
+    "sleep_hours": 8
+  },
+  "invalid_records_by_rule": [
+    {
+      "rule": "missing_required_columns",
+      "severity": "High",
+      "count": 0,
+      "description": ""
+    },
+    {
+      "rule": "duplicate_records",
+      "severity": "Medium",
+      "count": 24,
+      "description": "Duplicate player/date/session records."
+    },
+    {
+      "rule": "invalid_dates",
+      "severity": "High",
+      "count": 0,
+      "description": "Rows with invalid dates."
+    },
+    {
+      "rule": "workload_score_range",
+      "severity": "High",
+      "count": 5,
+      "description": "workload_score outside expected range 0-1000."
+    },
+    {
+      "rule": "sprint_count_range",
+      "severity": "Medium",
+      "count": 0,
+      "description": "sprint_count outside expected range 0-60."
+    },
+    {
+      "rule": "throwing_volume_range",
+      "severity": "Medium",
+      "count": 0,
+      "description": "throwing_volume outside expected range 0-220."
+    },
+    {
+      "rule": "pitch_count_range",
+      "severity": "High",
+      "count": 5,
+      "description": "pitch_count outside expected range 0-130."
+    },
+    {
+      "rule": "average_heart_rate_range",
+      "severity": "High",
+      "count": 0,
+      "description": "average_heart_rate outside expected range 50-210."
+    },
+    {
+      "rule": "max_heart_rate_range",
+      "severity": "High",
+      "count": 0,
+      "description": "max_heart_rate outside expected range 70-230."
+    },
+    {
+      "rule": "sleep_hours_range",
+      "severity": "Medium",
+      "count": 4,
+      "description": "sleep_hours outside expected range 3-12."
+    },
+    {
+      "rule": "soreness_rating_range",
+      "severity": "Medium",
+      "count": 4,
+      "description": "soreness_rating outside expected range 1-10."
+    },
+    {
+      "rule": "recovery_score_range",
+      "severity": "Medium",
+      "count": 0,
+      "description": "recovery_score outside expected range 0-100."
+    },
+    {
+      "rule": "readiness_score_range",
+      "severity": "Medium",
+      "count": 4,
+      "description": "readiness_score outside expected range 0-100."
+    },
+    {
+      "rule": "invalid_session_type",
+      "severity": "High",
+      "count": 0,
+      "description": "Invalid session_type values."
+    },
+    {
+      "rule": "invalid_position",
+      "severity": "High",
+      "count": 3,
+      "description": "Invalid position values."
+    },
+    {
+      "rule": "non_pitcher_high_pitch_count",
+      "severity": "High",
+      "count": 8,
+      "description": "Non-pitchers with unrealistic pitch counts above 15."
+    },
+    {
+      "rule": "rest_day_high_workload",
+      "severity": "Medium",
+      "count": 21,
+      "description": "Rest days with workload above 150."
+    },
+    {
+      "rule": "game_day_missing_workload",
+      "severity": "High",
+      "count": 1,
+      "description": "Game rows missing workload score."
+    },
+    {
+      "rule": "player_logs_missing_consecutive_days",
+      "severity": "Low",
+      "count": 0,
+      "description": "Player logs with date gaps."
+    }
+  ],
+  "severity_summary": {
+    "Low": 0,
+    "Medium": 57,
+    "High": 22
+  },
+  "cleaned_record_count": 3197,
+  "removed_record_count": 15,
+  "imputed_value_count": 54,
+  "validation_note": "Cleaning step fills cleaned/removed counts after processing."
+}
