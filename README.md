@@ -200,14 +200,23 @@ Instructions are documented in `dashboards/tableau_dashboard_instructions.md` an
 
 The project also includes a built-in read-only web dashboard served by FastAPI at `/dashboard`. It uses the same `dashboard_export.csv` data and provides filters for player, team, position, risk category, and date range.
 
-## Example Output Screenshots
+## Project Screenshots
 
-Add screenshots after building dashboards:
+### Dashboard Overview
 
-- `docs/images/team-overview.png`
-- `docs/images/player-monitoring.png`
-- `docs/images/pitcher-workload.png`
-- `docs/images/risk-alerts.png`
+![Dashboard Overview](screenshots/dashboard-overview.png)
+
+### Team Filter View
+
+![Team Filter View](screenshots/dashboard-team-filter.png)
+
+### Analytics Panels
+
+![Analytics Panels](screenshots/dashboard-analytics-panels.png)
+
+### Risk Alerts
+
+![Risk Alerts](screenshots/dashboard-risk-alerts.png)
 
 ## Testing
 
